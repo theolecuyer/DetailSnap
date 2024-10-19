@@ -1,37 +1,46 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
-
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
+import { Ionicons } from '@expo/vector-icons';
+import { Pressable } from 'react-native';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+    screenOptions={({ route }) => ({
+        tabBarActiveTintColor: '#2B7BE4',
+        tabBarInactiveTintColor: 'gray',
+        tabBarShowLabel: false,
+        tabBarStyle: { paddingBottom: 10, height: 65 },
+      })}
+    >
+      <Tabs.Screen name="index" options={{ 
+        headerShown: true,
+        title: '',
+        headerRight: () => (
+            <Pressable
+                onPress={() => {
+                    console.log('Search icon pressed');
+                }}
+                style={{ marginRight: 15 }}
+            >
+                <Ionicons name="search" size={24} color="black" />
+            </Pressable>
+        ),
+        tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'home' : 'home-outline'} size={24} color={color} />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'code-slash' : 'code-slash-outline'} color={color} />
+        }} />
+      <Tabs.Screen name="photos" options={{ 
+        title: 'Photos',
+        tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'image' : 'image-outline'} size={24} color={color} />
           ),
-        }}
-      />
+        }} />
+      <Tabs.Screen name="account" options={{ 
+        title: 'account', 
+        tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
+          ),
+        }} />
     </Tabs>
   );
 }
