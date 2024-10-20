@@ -4,6 +4,7 @@ export type detailInfo = {
     services: Service[];
     carMake: string;
     carModel: string;
+    date: string,
 }
 
 type Service = 'Interior' | 'Exterior' | 'Ceramic Coating' | 'Tint';

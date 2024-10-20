@@ -33,6 +33,7 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.text}>{detailInfo.carMake + " " + detailInfo.carModel}</Text>
+                <Text style={styles.dateText}>{new Date(detailInfo.date).toLocaleDateString()}</Text>
             </View>
             <View style={styles.servicesContainer}>
                 {detailInfo.services.map((service, index) => (
@@ -86,6 +87,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexWrap: 'wrap',
         marginTop: 4,
+    },
+    dateText: {
+        textAlign: 'left',
+        fontSize: 12,
+        color: '#999',
     },
     servicesText: {
         fontSize: 10,

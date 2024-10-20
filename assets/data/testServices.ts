@@ -6,6 +6,7 @@ export type detailInfo = {
     services: Service[];
     carMake: string;
     carModel: string;
+    date: string;
 }
 
 const detailInfoList: detailInfo[] = [
@@ -15,27 +16,31 @@ const detailInfoList: detailInfo[] = [
         services: ['Interior', 'Exterior'] as Service[],
         carMake: "GMC",
         carModel: "Yukon",
+        date: "2024-10-19"
     },
     {
         id: 2,
         image: 'https://vehicle-images.dealerinspire.com/8316-110005802/1HGCY2F73RA061406/26fd5ca9a260656e22ec83a4004df14b.jpg',
         services: ['Ceramic Coating', 'Tint', 'Interior'],
         carMake: 'Honda',
-        carModel: 'Accord'
+        carModel: 'Accord',
+        date: "2024-10-19"
     },
     {
         id: 3,
         image: 'https://vehicle-images.dealerinspire.com/c363-110008765/1FA6P8CFXR5425302/077e0bf0c84e3ef3dff79d962aaa59e0.jpg',
         services: ['Exterior'],
         carMake: 'Ford',
-        carModel: 'Mustang'
+        carModel: 'Mustang',
+        date: "2024-10-19",
     },
     {
         id: 4,
         image: 'https://i.pinimg.com/736x/2d/31/79/2d3179c76201d77f38d3354bb4f7cc75.jpg',
         services: ['Interior'],
         carMake: 'Ford',
-        carModel: 'Escape'
+        carModel: 'Escape',
+        date: "2024-10-19",
     },
     {
         id: 8,
@@ -43,27 +48,31 @@ const detailInfoList: detailInfo[] = [
         services: ['Interior', 'Exterior'] as Service[],
         carMake: "GMC",
         carModel: "Yukon",
+        date: "2024-10-19",
     },
     {
         id: 5,
         image: 'https://vehicle-images.dealerinspire.com/8316-110005802/1HGCY2F73RA061406/26fd5ca9a260656e22ec83a4004df14b.jpg',
         services: ['Ceramic Coating', 'Tint', 'Interior'],
         carMake: 'Honda',
-        carModel: 'Accord'
+        carModel: 'Accord',
+        date: "2024-10-19",
     },
     {
         id: 6,
         image: 'https://vehicle-images.dealerinspire.com/c363-110008765/1FA6P8CFXR5425302/077e0bf0c84e3ef3dff79d962aaa59e0.jpg',
         services: ['Exterior'],
         carMake: 'Ford',
-        carModel: 'Mustang'
+        carModel: 'Mustang',
+        date: "2024-10-19",
     },
     {
         id: 7,
         image: 'https://i.pinimg.com/736x/2d/31/79/2d3179c76201d77f38d3354bb4f7cc75.jpg',
         services: ['Interior'],
         carMake: 'Ford',
-        carModel: 'Escape'
+        carModel: 'Escape',
+        date: "2024-10-19",
     }
 ]
 
