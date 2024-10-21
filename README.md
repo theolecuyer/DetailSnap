@@ -57,7 +57,7 @@ To run DetailSnap locally before it is finished and completely available, you wi
 
 ### Current Status
 
-- **Project Start**: The project files have been created, and the basic structure is in place.
+- **Project Start**: The introductory UI and functionalities are being implmented.
 
 ### Future Phases
 
