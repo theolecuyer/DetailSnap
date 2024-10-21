@@ -35,8 +35,14 @@ export default function TabLayout() {
             <Ionicons name={focused ? 'image' : 'image-outline'} size={24} color={color} />
           ),
         }} />
+        <Tabs.Screen name="analytics" options={{ 
+        title: 'Analytics',
+        tabBarIcon: ({ color, focused }) => (
+            <Ionicons name={focused ? 'analytics' : 'analytics-outline'} size={26} color={color} />
+          ),
+        }} />
       <Tabs.Screen name="account" options={{ 
-        title: 'account', 
+        title: 'Account', 
         tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? 'person' : 'person-outline'} size={24} color={color} />
           ),
