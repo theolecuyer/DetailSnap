@@ -100,4 +100,4 @@ For any questions or feedback please reach out:
 - **GitHub**: [https://github.com/theolecuyer](https://github.com/theolecuyer)
 - **Project Repository**: [https://github.com/theolecuyer/DetailSnap](https://github.com/theolecuyer/DetailSnap)
 
-**Last Updated 10/17/2024**
+**Last Updated 10/20/2024**

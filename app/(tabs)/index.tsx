@@ -16,7 +16,6 @@ export default function Index() {
   };
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
       <FlatList
       ListHeaderComponent={
       <View style={styles.headerContainer}>
@@ -30,7 +29,6 @@ export default function Index() {
       contentContainerStyle={{ gap: 10, padding: 10 }}
       columnWrapperStyle={{ gap: 10 }}
       />
-      </GestureHandlerRootView>
   );
 }
 
