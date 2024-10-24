@@ -4,7 +4,15 @@ export type detailInfo = {
     services: Service[];
     carMake: string;
     carModel: string;
-    date: string,
+    date: string;
+}
+
+export type shop {
+    id: number;
+    image: string|null;
+    owner: account;
+    manager: account[];
+    employee: account[];
 }
 
 export type account = {
