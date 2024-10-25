@@ -2,12 +2,17 @@ export type detailInfo = {
     id: number;
     image: string | null;
     services: Service[];
+    open: boolean;
     carMake: string;
     carModel: string;
     date: string;
 }
 
-export type shop {
+export type active = {
+    activeDetails: detailInfo[];
+}
+
+export type shop = {
     id: number;
     image: string|null;
     owner: account;
