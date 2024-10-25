@@ -26,5 +26,5 @@ export type account = {
     permissions: Permissions;
 }
 
-type Permissions = 'Owner' | 'Manager' | 'Employee'
-type Service = 'Interior' | 'Exterior' | 'Ceramic Coating' | 'Tint';
+export type Permissions = 'Owner' | 'Manager' | 'Employee'
+export type Service = 'Interior' | 'Exterior' | 'Ceramic Coating' | 'Tint';

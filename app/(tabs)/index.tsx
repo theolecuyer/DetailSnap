@@ -16,10 +16,11 @@ export default function Index() {
   };
 
   return (
+    <View>
       <FlatList
       ListHeaderComponent={
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Recent Details</Text>
+        <Text style={styles.header}>Active Details</Text>
         <Caret onPress={caretPress} />
       </View>
     }
@@ -29,6 +30,7 @@ export default function Index() {
       contentContainerStyle={{ gap: 10, padding: 10 }}
       columnWrapperStyle={{ gap: 10 }}
       />
+    </View>
   );
 }
 
