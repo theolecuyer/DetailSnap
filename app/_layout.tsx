@@ -28,6 +28,7 @@ export default function RootLayout() {
     <Stack>
       <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
       <Stack.Screen name="(auth)" options={{headerShown: false}}/>
+      <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
       <Stack.Screen name="+not-found" />
     </Stack>
     </ThemeProvider>

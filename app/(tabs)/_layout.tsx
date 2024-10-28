@@ -1,9 +1,24 @@
-import { Tabs } from 'expo-router';
+import { Tabs, Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import { Colors } from '@/constants/Colors';
 
 export default function TabLayout() {
   return (
+    <View style={styles.container}>
+      <Link href="/addItem" asChild>
+        <Pressable style={styles.addButton}>
+          {({ pressed }) => (
+            <View style={[styles.buttonContainer, { backgroundColor: pressed ? Colors.light.tint : 'white' }]}>
+            <Ionicons 
+              name="add" 
+              size={28} 
+              color={pressed ? 'white' : Colors.light.tint} 
+            />
+            </View>
+          )}
+        </Pressable>
+      </Link>
     <Tabs
     screenOptions={({ route }) => ({
         tabBarActiveTintColor: '#2B7BE4',
@@ -48,5 +63,30 @@ export default function TabLayout() {
           ),
         }} />
     </Tabs>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  addButton: {
+    position: 'absolute',
+    bottom: 40,
+    alignSelf: 'center',
+    zIndex: 1,
+  },
+  buttonContainer: {
+    width: 52,
+    height: 52,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+})
