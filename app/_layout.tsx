@@ -1,6 +1,6 @@
 import { Stack, SplashScreen } from "expo-router";
 import "@/global.css";
-import GluestackUIProvider from "@/components/ui/GluestackUIProvider";
+import { GluestackUIProvider } from "@/components/ui/gluestack-ui-provider";
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { ThemeProvider, DarkTheme, DefaultTheme } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -26,14 +26,14 @@ export default function RootLayout() {
 
   return (
     <GluestackUIProvider><GestureHandlerRootView style={{ flex: 1 }}>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
-          <Stack.Screen name="(auth)" options={{headerShown: false}}/>
-          <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        </ThemeProvider>
-      </GestureHandlerRootView></GluestackUIProvider>
+          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
+            <Stack.Screen name="(auth)" options={{headerShown: false}}/>
+            <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+          </ThemeProvider>
+        </GestureHandlerRootView></GluestackUIProvider>
   );
 }

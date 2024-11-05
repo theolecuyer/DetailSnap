@@ -4,7 +4,7 @@ import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
 import { useState, useRef } from "react";
 import Caret from "@/components/Caret";
-import { HStack } from "@gluestack-ui/themed";
+import { HStack } from "@/components/ui/hstack";
 
 
 export default function Index() {
@@ -19,7 +19,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <HStack alignItems="center" style={styles.hStackContainer}>
+      <HStack style={styles.hStackContainer}>
         <View style={styles.profileContainer}>
           <Image
             source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
