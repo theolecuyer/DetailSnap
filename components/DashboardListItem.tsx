@@ -5,13 +5,13 @@ import { Colors } from "@/constants/Colors";
 
 type DashboardListItemProps = {
     detailInfo: detailInfo;
-}
+};
 
 const serviceColors: { [key in detailInfo['services'][number]]: string } = {
-    'Interior': '#FF5733',
-    'Exterior': '#33FF57',
-    'Ceramic Coating': '#3357FF',
-    'Tint': '#FFC300',
+    'Interior': '#f38a72',
+    'Exterior': '#4d965c',
+    'Ceramic Coating': '#627efb',
+    'Tint': '#fed54b',
 };
 
 const textColors: { [key in detailInfo['services'][number]]: string } = {
@@ -47,61 +47,58 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
             </View>
         </Pressable>
     );
-}
+};
 
 export default DashboardListItem;
 
 const styles = StyleSheet.create({
     container: {
         backgroundColor: 'rgb(243, 243, 243)',
-        borderRadius: 20,
-        flex: 1,
-        maxWidth: '50%',
+        borderRadius: 12,
+        width: 200,
+        height: 200,
         borderWidth: 0.5,
         borderColor: '#ccc',
-        paddingBottom: 10,
+        marginHorizontal: 5,
     },
     imageContainer: {
         width: '100%',
-        aspectRatio: 155 / 105,
+        aspectRatio: 1.5,
         overflow: 'hidden',
-        borderWidth: 0.5,
-        borderColor: '#ccc',
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 12,
+        borderTopRightRadius: 12,
     },
     image: {
         width: '100%',
         height: '100%',
     },
     textContainer: {
-        marginTop: 8,
+        marginTop: 4,
         alignItems: 'center',
     },
     text: {
         textAlign: 'center',
-        marginVertical: 2,
+        fontSize: 12,
+    },
+    dateText: {
+        textAlign: 'center',
+        fontSize: 10,
+        color: '#999',
     },
     servicesContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        marginTop: 4,
-    },
-    dateText: {
-        textAlign: 'left',
-        fontSize: 12,
-        color: '#999',
+        marginTop: 2,
     },
     servicesText: {
-        fontSize: 10,
-        color: 'white',
-        textAlign: 'left',
-        marginHorizontal: 5,
+        fontSize: 8,
+        textAlign: 'center',
+        marginHorizontal: 3,
     },
     serviceHighlight: {
-        padding: 4,
-        borderRadius: 5,
-        marginHorizontal: 5,
+        padding: 2,
+        borderRadius: 4,
+        marginHorizontal: 3,
     },
 });

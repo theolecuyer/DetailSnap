@@ -8,6 +8,13 @@ export type detailInfo = {
     date: string;
 }
 
+export type customer = {
+    customerName: string;
+    email: string;
+    phoneNumber: string;
+    details: detailInfo[];
+}
+
 export type active = {
     activeDetails: detailInfo[];
 }
