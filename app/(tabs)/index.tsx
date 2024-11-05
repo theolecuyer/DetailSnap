@@ -1,10 +1,11 @@
-import { Text, View, StyleSheet, Pressable, Animated, Image } from "react-native";
+import { Text, View, StyleSheet, Pressable, Animated, Image, ScrollView } from "react-native";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
 import { useState, useRef } from "react";
 import Caret from "@/components/Caret";
 import { HStack } from "@/components/ui/hstack";
+import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from "@/components/ui/avatar";
 
 
 export default function Index() {
@@ -18,8 +19,18 @@ export default function Index() {
   // };
 
   return (
+    <ScrollView>
     <View style={styles.container}>
-      <HStack style={styles.hStackContainer}>
+      <HStack space={"md"} style={styles.hStackContainer}>
+
+      <Avatar size="md" className="bg-orange-300">
+        <AvatarFallbackText className="text-white">
+          Test User
+        </AvatarFallbackText>
+        <AvatarBadge />
+      </Avatar>
+      
+
         <View style={styles.profileContainer}>
           <Image
             source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
@@ -81,6 +92,7 @@ export default function Index() {
       />
 
     </View>
+    </ScrollView>
   );
 }
 
