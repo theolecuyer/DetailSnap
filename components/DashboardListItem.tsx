@@ -7,14 +7,14 @@ type DashboardListItemProps = {
     detailInfo: detailInfo;
 };
 
-const serviceColors: { [key in detailInfo['services'][number]]: string } = {
+const serviceColors: { [key in string]: string } = {
     'Interior': '#f38a72',
     'Exterior': '#4d965c',
     'Ceramic Coating': '#627efb',
     'Tint': '#fed54b',
 };
 
-const textColors: { [key in detailInfo['services'][number]]: string } = {
+const textColors: { [key in string]: string } = {
     'Interior': '#ffffff',
     'Exterior': '#000000',
     'Ceramic Coating': '#ffffff',
@@ -22,31 +22,40 @@ const textColors: { [key in detailInfo['services'][number]]: string } = {
 };
 
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
-    return (
-        <Pressable style={styles.container}>
-            <View style={styles.imageContainer}>
-                <Image
-                    source={detailInfo.image ? { uri: detailInfo.image } : defaultImage}
-                    style={styles.image}
-                    resizeMode='cover'
-                />
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.text}>{detailInfo.carMake + " " + detailInfo.carModel}</Text>
-                <Text style={styles.dateText}>{new Date(detailInfo.date).toLocaleDateString()}</Text>
-            </View>
-            <View style={styles.servicesContainer}>
-                {detailInfo.services.map((service, index) => (
-                    <View
-                        key={index}
-                        style={[styles.serviceHighlight, { backgroundColor: serviceColors[service] }]}
-                    >
-                        <Text style={[styles.servicesText, { color: textColors[service]}]}>{service}</Text>
-                    </View>
-                ))}
-            </View>
-        </Pressable>
-    );
+    if ('carMake' in detailInfo) {
+        // Render the car detail card
+        return (
+            <Pressable style={styles.container}>
+                <View style={styles.imageContainer}>
+                    <Image
+                        source={detailInfo.image ? { uri: detailInfo.image } : defaultImage}
+                        style={styles.image}
+                        resizeMode='cover'
+                    />
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.text}>{detailInfo.carMake + " " + detailInfo.carModel}</Text>
+                    <Text style={styles.dateText}>{new Date(detailInfo.date).toLocaleDateString()}</Text>
+                </View>
+                <View style={styles.servicesContainer}>
+                    {detailInfo.services.map((service, index) => (
+                        <View
+                            key={index}
+                            style={[styles.serviceHighlight, { backgroundColor: serviceColors[service] }]}
+                        >
+                            <Text style={[styles.servicesText, { color: textColors[service] }]}>{service}</Text>
+                        </View>
+                    ))}
+                </View>
+            </Pressable>
+        );
+    } else {
+        return (
+            <Pressable style={[styles.container, styles.addCardContainer]}>
+                <Text style={styles.addCardText}>Add New Detail</Text>
+            </Pressable>
+        );
+    }
 };
 
 export default DashboardListItem;
@@ -100,5 +109,13 @@ const styles = StyleSheet.create({
         padding: 2,
         borderRadius: 4,
         marginHorizontal: 3,
+    },
+    addCardContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    addCardText: {
+        fontSize: 16,
+        color: Colors.light.tint,
     },
 });

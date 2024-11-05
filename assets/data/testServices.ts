@@ -72,7 +72,11 @@ const detailInfoList: detailInfo[] = [
         carMake: 'Ford',
         carModel: 'Escape',
         date: "2024-10-19",
-    }
+    },
+    {
+        id: "add_card",
+        type: 'add',
+    },
 ]
 
 export default detailInfoList;

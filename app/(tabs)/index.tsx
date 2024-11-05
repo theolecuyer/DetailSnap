@@ -4,6 +4,8 @@ import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
 import { useState, useRef } from "react";
 import Caret from "@/components/Caret";
+import { HStack } from "@gluestack-ui/themed";
+
 
 export default function Index() {
   // //Values for the caret and for animation, unused, possibly future
@@ -17,35 +19,67 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <View style = {styles.profileContainer}>
-        <Image source={{uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png"}}
-        style={styles.image}
-        resizeMode="cover"
-        />
-        <Text style={styles.profileText}>Test User</Text>
-      </View>
+      <HStack alignItems="center" style={styles.hStackContainer}>
+        <View style={styles.profileContainer}>
+          <Image
+            source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <Text style={styles.profileText}>Test User</Text>
+        </View>
+        <View style={styles.profileContainer}>
+          <Image
+            source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
+            style={styles.image}
+            resizeMode="cover"
+          />
+          <Text style={styles.profileText}>Test User</Text>
+        </View>
+      </HStack>
+
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Active</Text>
         <Caret/>
       </View>
+
       <FlatList
         horizontal
         data={detailInfoList}
-        renderItem={({ item }) => <DashboardListItem detailInfo={item} />}
-        contentContainerStyle={styles.listContainer}
-        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) =>
+          item.id === "add_card" ? (
+            <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
+              <Text style={styles.addText}>+ Add</Text>
+            </Pressable>
+          ) : (
+            <DashboardListItem detailInfo={item} />
+          ) 
+        }
+      contentContainerStyle={styles.listContainer}
+      showsHorizontalScrollIndicator={false}
       />
+
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Completed</Text>
         <Caret/>
       </View>
-       <FlatList
+      
+      <FlatList
         horizontal
         data={detailInfoList}
-        renderItem={({ item }) => <DashboardListItem detailInfo={item} />}
-        contentContainerStyle={styles.listContainer}
-        showsHorizontalScrollIndicator={false}
+        renderItem={({ item }) =>
+          item.id === "add_card" ? (
+            <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
+              <Text style={styles.addText}>+ Add</Text>
+            </Pressable>
+          ) : (
+            <DashboardListItem detailInfo={item} />
+          ) 
+        }
+      contentContainerStyle={styles.listContainer}
+      showsHorizontalScrollIndicator={false}
       />
+
     </View>
   );
 }
@@ -62,6 +96,9 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  hStackContainer: {
+    marginBottom: 10,
   },
   profileContainer: {
     alignItems: 'flex-start',
@@ -80,5 +117,18 @@ const styles = StyleSheet.create({
     fontSize: 10,
     textAlign: 'center',
     width: 50,
+  },
+  addCard: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 100,
+    height: 100,
+    backgroundColor: '#e0e0e0',
+    marginLeft: 10,
+    borderRadius: 8,
+  },
+  addText: {
+    fontSize: 18,
+    color: '#555',
   },
 });
