@@ -30,14 +30,17 @@ export type active = {
 
 export type shop = {
     id: number;
+    name: string;
     image: string|null;
     owner: account;
     manager: account[];
     employee: account[];
+    details: detailInfo[];
 };
 
 export type account = {
     id: number;
+    shopId: number; 
     image: string | null;
     permissions: Permissions;
 };

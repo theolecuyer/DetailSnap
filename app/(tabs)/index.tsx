@@ -5,7 +5,8 @@ import DashboardListItem from "@/components/DashboardListItem";
 import { useState, useRef } from "react";
 import Caret from "@/components/Caret";
 import { HStack } from "@/components/ui/hstack";
-import { Avatar, AvatarBadge, AvatarFallbackText, AvatarImage } from "@/components/ui/avatar";
+import { VStack } from "@/components/ui/vstack";
+import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 
 
 export default function Index() {
@@ -19,41 +20,56 @@ export default function Index() {
   // };
 
   return (
-    <ScrollView>
-    <View style={styles.container}>
-      <HStack space={"md"} style={styles.hStackContainer}>
-
-      <Avatar size="md" className="bg-orange-300">
-        <AvatarFallbackText className="text-white">
-          Test User
-        </AvatarFallbackText>
-        <AvatarBadge />
-      </Avatar>
+    <ScrollView style={styles.container}>
+      {/*Team Header*/}
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Team</Text>
+      <Caret/>
       
-
-        <View style={styles.profileContainer}>
-          <Image
-            source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+      </View>
+      
+      {/*Profile photo rendering*/}
+      <HStack space={"md"} style={styles.hStackContainer}>
+        <VStack style={{paddingRight:10}}>
+          <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-orange-300">
+            <AvatarFallbackText className="text-white">
+              Test User
+            </AvatarFallbackText>
+            <AvatarBadge />
+          </Avatar>
           <Text style={styles.profileText}>Test User</Text>
-        </View>
-        <View style={styles.profileContainer}>
-          <Image
-            source={{ uri: "https://static.vecteezy.com/system/resources/previews/019/879/186/non_2x/user-icon-on-transparent-background-free-png.png" }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-          <Text style={styles.profileText}>Test User</Text>
-        </View>
+      </VStack>
+      {/*Placeholders for now, mapping func later*/}
+      <AvatarGroup>
+        <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-indigo-600">
+          <AvatarFallbackText className="text-white">
+              O B
+          </AvatarFallbackText>
+        </Avatar>
+        <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-emerald-600">
+          <AvatarFallbackText className="text-white">
+              Test L
+          </AvatarFallbackText>
+        </Avatar>
+        <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-cyan-600">
+          <AvatarFallbackText className="text-white">
+              D K
+          </AvatarFallbackText>
+        </Avatar>
+        <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-gray-600">
+          <AvatarFallbackText className="text-white">
+              +
+              2
+          </AvatarFallbackText>
+        </Avatar>
+      </AvatarGroup>
       </HStack>
 
+      {/*Active Header & flastlist*/}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Active</Text>
         <Caret/>
       </View>
-
       <FlatList
         horizontal
         data={detailInfoList}
@@ -70,11 +86,11 @@ export default function Index() {
       showsHorizontalScrollIndicator={false}
       />
 
+      {/*Completed Header & flastlist*/}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Completed</Text>
         <Caret/>
       </View>
-      
       <FlatList
         horizontal
         data={detailInfoList}
@@ -90,8 +106,6 @@ export default function Index() {
       contentContainerStyle={styles.listContainer}
       showsHorizontalScrollIndicator={false}
       />
-
-    </View>
     </ScrollView>
   );
 }
