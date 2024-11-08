@@ -13,7 +13,7 @@ export default function SignIn() {
   async function signInWithEmail() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-
+    
     if (error) Alert.alert(error.message)
     setLoading(false)
   }
