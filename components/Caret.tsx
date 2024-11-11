@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Animated, Pressable, StyleSheet } from 'react-native';
+import { Animated, Pressable, StyleSheet, Text } from 'react-native';
 
 interface CaretProps {
     onPress?: (isDown: boolean) => void;
@@ -7,15 +7,15 @@ interface CaretProps {
 
 export default function Caret({ onPress }: CaretProps) {
   const [caretDown, setCaretDown] = useState(true);
-  const rotation = useRef(new Animated.Value(0)).current;
+  // const rotation = useRef(new Animated.Value(0)).current;
 
   const handlePress = () => {
     setCaretDown(prev => !prev);
-    Animated.timing(rotation, {
-      toValue: caretDown ? 1 : 0,
-      duration: 150,
-      useNativeDriver: true,
-    }).start();
+    // Animated.timing(rotation, {
+    //   toValue: caretDown ? 1 : 0,
+    //   duration: 150,
+    //   useNativeDriver: true,
+    // }).start();
 
     //External handler if provided to the component
     if (onPress) {
@@ -23,16 +23,19 @@ export default function Caret({ onPress }: CaretProps) {
     }
   };
 
-  const rotate = rotation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '-90deg'],
-  });
+  // const rotate = rotation.interpolate({
+  //   inputRange: [0, 1],
+  //   outputRange: ['0deg', '-90deg'],
+  // });
 
   return (
     <Pressable onPress={handlePress}>
-      <Animated.Text style={[styles.caret, { transform: [{ rotate }] }]}>
+      <Text style={styles.caret}>
         v
-      </Animated.Text>
+      </Text>
+      {/* <Animated.Text style={[styles.caret, { transform: [{ rotate }] }]}>
+        v
+      </Animated.Text> */}
     </Pressable>
   );
 }

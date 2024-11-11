@@ -8,24 +8,27 @@ type DashboardListItemProps = {
 };
 
 const serviceColors: { [key in string]: string } = {
-    'Interior': '#f38a72',
-    'Exterior': '#4d965c',
+    'Interior': '#f8ae8b',
+    'Exterior': '#5e964d',
     'Ceramic Coating': '#627efb',
     'Tint': '#fed54b',
 };
 
 const textColors: { [key in string]: string } = {
-    'Interior': '#ffffff',
-    'Exterior': '#000000',
+    'Interior': '#000000',
+    'Exterior': '#eeeeee',
     'Ceramic Coating': '#ffffff',
     'Tint': '#000000',
 };
 
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     if ('carMake' in detailInfo) {
+        const detailRedirect = () => {
+            console.log("handling press for ", detailInfo.carMake)
+        }
         // Render the car detail card
         return (
-            <Pressable style={styles.container}>
+            <Pressable style={styles.container} onPress={detailRedirect}>
                 <View style={styles.imageContainer}>
                     <Image
                         source={detailInfo.image ? { uri: detailInfo.image } : defaultImage}
