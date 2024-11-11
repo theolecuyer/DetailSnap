@@ -9,13 +9,26 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [emailError, setEmailError] = useState(false);
   const [authError, setAuthError] = useState(false);
 
   async function signInWithEmail() {
     setLoading(true)
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    
-    if (error) setAuthError(true);
+    //Reset error codes
+    setAuthError(false);
+    setEmailError(false);
+    switch(error?.code) {
+      case "invalid_credentials":
+        setAuthError(true);
+        break;
+      case "validation_failed":
+        setEmailError(true);
+        break;
+      default:
+        setEmailError(false);
+        setAuthError(false);
+    }
     setLoading(false)
   }
 
@@ -29,6 +42,7 @@ export default function SignIn() {
       placeholder="example@email.com"
       style={styles.textField}
       />
+      <Text style={styles.errorText}>{emailError ? 'Please enter an email' : ''}</Text>
       <Text style={styles.fieldText}>Password</Text>
       <TextInput 
       value={password}
@@ -37,7 +51,7 @@ export default function SignIn() {
       style={styles.textField}
       secureTextEntry
       />
-      
+      <Text style={styles.errorText}>{authError ? 'The email or password you entered is incorrect. Please try again.' : ''}</Text>
       <Button onPress={signInWithEmail} disabled={loading} text={loading ? 'Signing in...' : 'Sign in'}/>
       <Link href="/sign_up" style={styles.signUp}>
         Create an account
@@ -60,7 +74,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     padding: 10,
     marginTop: 5,
-    marginBottom: 20,
     backgroundColor: 'white',
     borderRadius: 5,
   },
@@ -70,4 +83,8 @@ const styles = StyleSheet.create({
     color: Colors.light.tint,
     marginVertical: 10,
   },
+  errorText: {
+    color: 'red',
+    fontSize: 10,
+  }
 })

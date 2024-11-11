@@ -15,8 +15,24 @@ const SignUpScreen = () => {
   async function signUpWithEmail() {
     setLoading(true)
     const { error } = await supabase.auth.signUp({ email, password })
-
-    if (error) Alert.alert(error.message)
+    //Reset error codes
+    console.log(error?.code);
+    setPasswordError(false);
+    setEmailError(false);
+    switch(error?.code) {
+      case "anonymous_provider_disabled":
+        setEmailError(true);
+        break;
+      case "validation_failed":
+        setEmailError(true);
+        break;
+      case "weak_password":
+        setPasswordError(true);
+        break;
+      default:
+        setEmailError(false);
+        setPasswordError(false);
+    }
     setLoading(false)
   }
 
@@ -31,6 +47,7 @@ const SignUpScreen = () => {
         placeholder="example@email.com"
         style={styles.input}
       />
+      <Text style={styles.errorText}>{emailError ? 'Please enter a valid email' : ''}</Text>
 
       <Text style={styles.label}>Password</Text>
       <TextInput
@@ -40,6 +57,7 @@ const SignUpScreen = () => {
         style={styles.input}
         secureTextEntry
       />
+      <Text style={styles.errorText}>{passwordError ? 'Password must contain:\n6 letters' : ''}</Text>
 
       <Button onPress={signUpWithEmail} disabled={loading} text={loading ? 'Creating account...' : 'Create account'} />
       <Link href="/sign_in" style={styles.textButton}>
@@ -63,7 +81,6 @@ const styles = StyleSheet.create({
     borderColor: 'gray',
     padding: 10,
     marginTop: 5,
-    marginBottom: 20,
     backgroundColor: 'white',
     borderRadius: 5,
   },
@@ -73,6 +90,10 @@ const styles = StyleSheet.create({
     color: Colors.light.tint,
     marginVertical: 10,
   },
+  errorText: {
+    color: 'red',
+    fontSize: 10,
+  }
 });
 
 export default SignUpScreen;
