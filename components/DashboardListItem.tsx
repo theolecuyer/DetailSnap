@@ -2,6 +2,7 @@ import { detailInfo } from "@/types";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
+import { Link, useRouter, Href } from "expo-router";
 
 type DashboardListItemProps = {
     detailInfo: detailInfo;
@@ -22,13 +23,16 @@ const textColors: { [key in string]: string } = {
 };
 
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
+    const router = useRouter();
+   
     if ('carMake' in detailInfo) {
-        const detailRedirect = () => {
-            console.log("handling press for ", detailInfo.carMake)
-        }
+        const MY_ROUTE = `/(tabs)/${detailInfo.id}` as Href
         // Render the car detail card
+        const handlePress = () => {
+            router.push(MY_ROUTE); // Navigate to the specified route
+          };
         return (
-            <Pressable style={styles.container} onPress={detailRedirect}>
+            <Pressable style={styles.container} onPress={handlePress}>
                 <View style={styles.imageContainer}>
                     <Image
                         source={detailInfo.image ? { uri: detailInfo.image } : defaultImage}
@@ -50,7 +54,7 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
                         </View>
                     ))}
                 </View>
-            </Pressable>
+            </Pressable>    
         );
     } else {
         return (
