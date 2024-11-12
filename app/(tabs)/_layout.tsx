@@ -1,8 +1,7 @@
 import { Tabs, Link } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { Colors } from '@/constants/Colors';
-
 export default function TabLayout() {
   return (
     <View style={styles.container}>
@@ -21,6 +20,12 @@ export default function TabLayout() {
       </Link>
     <Tabs
     screenOptions={({ route }) => ({
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: 'rgb(242, 242, 242)',
+          shadowColor: 'transparent',
+          elevation: 0,
+        },
         tabBarActiveTintColor: '#2B7BE4',
         tabBarInactiveTintColor: 'gray',
         tabBarShowLabel: false,
@@ -29,13 +34,16 @@ export default function TabLayout() {
     >
       <Tabs.Screen name="index" options={{ 
         headerShown: true,
-        title: '',
+        title: 'DetailSnap',
+        headerLeft: () => (
+          <Text>Logo here</Text>
+        ),
         headerRight: () => (
             <Pressable
                 onPress={() => {
                     console.log('Search icon pressed');
                 }}
-                style={{ marginRight: 15 }}
+                style={{ marginRight: 15}}
             >
                 <Ionicons name="search" size={24} color="black" />
             </Pressable>

@@ -25,7 +25,8 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider><GestureHandlerRootView style={{ flex: 1 }}>
+    <GluestackUIProvider>   
+      <GestureHandlerRootView style={{ flex: 1 }}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{headerShown: false}}/>
@@ -34,6 +35,7 @@ export default function RootLayout() {
             <Stack.Screen name="+not-found" />
           </Stack>
           </ThemeProvider>
-        </GestureHandlerRootView></GluestackUIProvider>
+      </GestureHandlerRootView>
+    </GluestackUIProvider>
   );
 }

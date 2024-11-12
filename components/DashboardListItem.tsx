@@ -26,11 +26,11 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     const router = useRouter();
    
     if ('carMake' in detailInfo) {
-        const MY_ROUTE = `/(tabs)/${detailInfo.id}` as Href
+        const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href
         // Render the car detail card
         const handlePress = () => {
-            router.push(MY_ROUTE); // Navigate to the specified route
-          };
+            router.push(MY_ROUTE);
+        };
         return (
             <Pressable style={styles.container} onPress={handlePress}>
                 <View style={styles.imageContainer}>
