@@ -1,8 +1,17 @@
-import { Tabs, Link } from 'expo-router';
+import { Tabs, Link, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { Pressable, StyleSheet, View, Text } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { useAuth } from '@/providers/AuthProvider';
+import { useEffect } from 'react';
 export default function TabLayout() {
+  const {session} = useAuth();
+  const router = useRouter();
+  useEffect(() => {
+    if (!session) {
+      router.replace('/');
+    }
+  }, [session, router]);
   return (
     <View style={styles.container}>
       <Link href="/addItem" asChild>
