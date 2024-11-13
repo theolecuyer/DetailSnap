@@ -2,12 +2,13 @@ import { Text, View, StyleSheet, Pressable, Animated, Image, ScrollView } from "
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Caret from "@/components/Caret";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
-
+import { useAuth } from "@/providers/AuthProvider";
+import { useRouter } from "expo-router";
 
 export default function Index() {
   // //Values for the caret and for animation, unused, possibly future

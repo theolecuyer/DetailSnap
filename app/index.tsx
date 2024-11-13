@@ -24,7 +24,7 @@ const index = () => {
   );
 
   if (loading) {
-    return <ActivityIndicator />;
+    return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
   }
 
   return (

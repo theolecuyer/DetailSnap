@@ -1,6 +1,6 @@
 import { Link, Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, TextInput, Alert, ActivityIndicator } from 'react-native';
 import Button from '@/components/Button';
 import { Colors } from '@/constants/Colors';
 import { supabase } from '@/lib/supabase';
