@@ -9,6 +9,7 @@ import { VStack } from "@/components/ui/vstack";
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/providers/AuthProvider";
 import { useRouter } from "expo-router";
+import { FlashList } from "@shopify/flash-list";
 
 export default function Index() {
   // //Values for the caret and for animation, unused, possibly future
@@ -71,7 +72,8 @@ export default function Index() {
         <Text style={styles.header}>Active</Text>
         <Caret/>
       </View>
-      <FlatList
+      <View style={styles.listContainer}>
+      <FlashList
         horizontal
         data={detailInfoList}
         renderItem={({ item }) =>
@@ -83,16 +85,21 @@ export default function Index() {
             <DashboardListItem detailInfo={item} />
           ) 
         }
-      contentContainerStyle={styles.listContainer}
-      showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
+        nestedScrollEnabled={true}
+        estimatedItemSize={200}
       />
+      </View>
 
       {/*Completed Header & flastlist*/}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Completed</Text>
         <Caret/>
       </View>
-      <FlatList
+
+      <View style={styles.listContainer}>
+      <FlashList
         horizontal
         data={detailInfoList}
         renderItem={({ item }) =>
@@ -104,9 +111,12 @@ export default function Index() {
             <DashboardListItem detailInfo={item} />
           ) 
         }
-      contentContainerStyle={styles.listContainer}
-      showsHorizontalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
+        nestedScrollEnabled={true}
+        estimatedItemSize={200}
       />
+      </View>
     </ScrollView>
   );
 }
@@ -137,7 +147,7 @@ const styles = StyleSheet.create({
     padding: 6,
   },
   listContainer: {
-    gap: 10,
+    //gap: 10,
     marginBottom: 15,
   },
   profileText: {

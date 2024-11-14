@@ -3,6 +3,7 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter, Href } from "expo-router";
+import { memo } from "react";
 
 type DashboardListItemProps = {
     detailInfo: detailInfo;
