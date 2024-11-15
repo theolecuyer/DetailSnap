@@ -20,6 +20,8 @@ export default function Index() {
   //   setCaretDown(!caretDown);
   //   console.log("Caret is down:", !caretDown);
   // };
+  const { session, loading, profile } = useAuth();
+  const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 
 
   return (
     <ScrollView style={styles.container}>
@@ -35,11 +37,11 @@ export default function Index() {
         <VStack style={{paddingRight:10}}>
           <Avatar style={styles.image} size="md" className="border-2 border-outline-0 bg-orange-300">
             <AvatarFallbackText className="text-white">
-              Test User
+              {fullName}
             </AvatarFallbackText>
             <AvatarBadge />
           </Avatar>
-          <Text style={styles.profileText}>Test User</Text>
+          <Text style={styles.profileText}>{fullName}</Text>
       </VStack>
       {/*Placeholders for now, mapping func later*/}
       <AvatarGroup>

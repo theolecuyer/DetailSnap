@@ -28,7 +28,16 @@ const SignUpScreen = () => {
     }
 
     setLoading(true)
-    const { error } = await supabase.auth.signUp({ email, password })
+    const { error } = await supabase.auth.signUp({
+       email, password, 
+       options: {
+        data: {
+          first_name: firstname,
+          last_name: lastname,
+          avatar_url: '',
+        }
+       }
+    })
     //Reset error codes
     setPasswordError(false);
     setEmailError(false);
