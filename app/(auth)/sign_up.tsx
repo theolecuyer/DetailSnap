@@ -23,18 +23,6 @@ const SignUpScreen = () => {
     const isLastnameValid = lastname.length > 0;
     setFirstnameError(!isFirstnameValid);
     setLastnameError(!isLastnameValid);
-
-    console.log(firstname.length);
-    if(firstname.length < 1) {
-      setFirstnameError(true);
-    } else {
-      setFirstnameError(false);
-    }
-    if(lastname.length < 1) {
-      setLastnameError(true);
-    } else {
-      setLastnameError(false);
-    }
     if(!isFirstnameValid || !isLastnameValid) {
       return;
     }
@@ -42,7 +30,6 @@ const SignUpScreen = () => {
     setLoading(true)
     const { error } = await supabase.auth.signUp({ email, password })
     //Reset error codes
-    console.log(error?.code);
     setPasswordError(false);
     setEmailError(false);
     switch(error?.code) {
