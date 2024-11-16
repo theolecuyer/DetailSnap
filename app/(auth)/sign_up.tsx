@@ -6,39 +6,65 @@ import { Link, Stack } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 
 const SignUpScreen = () => {
+  //Auth states
   const [email, setEmail] = useState('');
-  const [firstname, setFirstname] = useState('');
-  const [firstnameError, setFirstnameError] = useState(false);
-  const [lastname, setLastname] = useState('');
-  const [lastnameError, setLastnameError] = useState(false);
-  const [company, setCompany] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  //User info states
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [company, setCompany] = useState('');
+  
+  //Supabase errors
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  //User input errors
+  const [firstnameError, setFirstnameError] = useState(false);
+  const [lastnameError, setLastnameError] = useState(false);
+  const [companyError, setCompanyError] = useState(false);
+  
 
   async function signUpWithEmail() {
     //Set errors initially to use outside states for checking
     const isFirstnameValid = firstname.length > 0;
     const isLastnameValid = lastname.length > 0;
+    const isCompanyValid = company.length > 0;
     setFirstnameError(!isFirstnameValid);
     setLastnameError(!isLastnameValid);
-    if(!isFirstnameValid || !isLastnameValid) {
+    setCompanyError(!isCompanyValid);
+    if(!isFirstnameValid || !isLastnameValid || !isCompanyValid) {
       return;
     }
 
     setLoading(true)
-    const { error } = await supabase.auth.signUp({
+
+    //Create a group. TODO: allow user to create new group or request to join current
+    const { data: newGroup, error: newGroupError } = await supabase
+    .from('groups')
+    .insert({ name: company, logo: ''})
+    .select()
+    .single();
+
+    if (newGroupError) {
+      setLoading(false);
+      Alert.alert(newGroupError.code);
+      console.error(newGroupError);
+      return;
+    }
+    //Sign up the user and create their profile
+    const { data: user, error } = await supabase.auth.signUp({
        email, password, 
        options: {
         data: {
           first_name: firstname,
           last_name: lastname,
-          avatar_url: '',
+          group_id: newGroup.id
+          //avatar_url: '',
         }
        }
     })
-    //Reset error codes
+    //Reset supabase error codes
     setPasswordError(false);
     setEmailError(false);
     switch(error?.code) {
@@ -54,6 +80,16 @@ const SignUpScreen = () => {
       default:
         setEmailError(false);
         setPasswordError(false);
+    }
+
+    //Add group owner to the group. TODO: Differentiate between owners/employees
+    const { error: groupUpdateError } = await supabase
+    .from('groups')
+    .update({ creator: user.user?.id })
+    .eq('id', newGroup.id);
+
+    if (groupUpdateError) {
+      Alert.alert('Failed to associate user with the group. Please try again.');
     }
     setLoading(false)
   }
@@ -78,6 +114,15 @@ const SignUpScreen = () => {
         autoCapitalize = 'words'
       />
       <Text style={lastnameError ? styles.errorText : styles.blankText}>Please enter a Last Name</Text>
+
+      <Text style={styles.label}>Company Name</Text>
+      <TextInput
+        value={company}
+        onChangeText={setCompany}
+        autoCapitalize='words'
+        style={styles.input}
+      />
+      <Text style={companyError ? styles.errorText : styles.blankText}>Please enter a valid email</Text>
 
       <Text style={styles.label}>Email</Text>
       <TextInput

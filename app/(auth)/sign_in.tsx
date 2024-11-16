@@ -40,6 +40,7 @@ export default function SignIn() {
       value={email}
       onChangeText={setEmail}
       placeholder="example@email.com"
+      autoCapitalize='none'
       style={styles.textField}
       />
       <Text style={styles.errorText}>{emailError ? 'Please enter an email' : ''}</Text>
@@ -49,6 +50,7 @@ export default function SignIn() {
       onChangeText={setPassword}
       placeholder=''
       style={styles.textField}
+      autoCapitalize='none'
       secureTextEntry
       />
       <Text style={styles.errorText}>{authError ? 'The email or password you entered is incorrect. Please try again.' : ''}</Text>

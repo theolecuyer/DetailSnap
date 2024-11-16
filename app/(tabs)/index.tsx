@@ -1,14 +1,11 @@
-import { Text, View, StyleSheet, Pressable, Animated, Image, ScrollView } from "react-native";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import { Text, View, StyleSheet, Pressable, Animated, Image, ScrollView, ActivityIndicator } from "react-native";
 import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
-import { useState, useRef, useEffect } from "react";
 import Caret from "@/components/Caret";
 import { HStack } from "@/components/ui/hstack";
 import { VStack } from "@/components/ui/vstack";
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/providers/AuthProvider";
-import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 
 export default function Index() {
@@ -20,7 +17,10 @@ export default function Index() {
   //   setCaretDown(!caretDown);
   //   console.log("Caret is down:", !caretDown);
   // };
-  const { session, loading, profile } = useAuth();
+  const { session, loading, profile, group } = useAuth();
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
+  }
   const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 
 
   return (
