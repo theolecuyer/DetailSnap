@@ -7,7 +7,7 @@ import { VStack } from "@/components/ui/vstack";
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
-
+import { useDetailList } from "@/api/details";
 export default function Index() {
   // //Values for the caret and for animation, unused, possibly future
   // const [caretDown, setCaretDown] = useState(true);
@@ -23,6 +23,8 @@ export default function Index() {
   }
   const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 
 
+  const {data: details} = useDetailList();
+  console.log(details);
   return (
     <ScrollView style={styles.container}>
       {/*Team Header*/}

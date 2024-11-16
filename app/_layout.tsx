@@ -7,6 +7,7 @@ import { useFonts } from "expo-font";
 import { useEffect} from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import AuthProvider from "@/providers/AuthProvider";
+import QueryProvider from "@/providers/QueryProvider";
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -28,17 +29,19 @@ export default function RootLayout() {
   return (
     <GluestackUIProvider>   
       <GestureHandlerRootView style={{ flex: 1 }}>
-          <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <AuthProvider>
-          <Stack>
-            <Stack.Screen name="index" options={{headerShown: false}}/>
-            <Stack.Screen name="(tabs)" options={{headerShown: false, animation: 'none'}}/>
-            <Stack.Screen name="(auth)" options={{headerShown: false, animation: 'none'}}/>
-            <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
-            <Stack.Screen name="+not-found" />
-          </Stack>
+            <QueryProvider>
+              <Stack>
+                <Stack.Screen name="index" options={{headerShown: false}}/>
+                <Stack.Screen name="(tabs)" options={{headerShown: false, animation: 'none'}}/>
+                <Stack.Screen name="(auth)" options={{headerShown: false, animation: 'none'}}/>
+                <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+            </QueryProvider>
           </AuthProvider>
-          </ThemeProvider>
+        </ThemeProvider>
       </GestureHandlerRootView>
     </GluestackUIProvider>
   );
