@@ -21,7 +21,7 @@ export type customer = {
     customerName: string;
     email: string;
     phoneNumber: string;
-    details: detailInfo[];
+    shop: number;
 };
 
 export type active = {

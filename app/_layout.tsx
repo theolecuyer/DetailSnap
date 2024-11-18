@@ -37,6 +37,7 @@ export default function RootLayout() {
                 <Stack.Screen name="(tabs)" options={{headerShown: false, animation: 'none'}}/>
                 <Stack.Screen name="(auth)" options={{headerShown: false, animation: 'none'}}/>
                 <Stack.Screen name="addItem" options={{ presentation: 'modal', title: 'Add Detail' }} />
+                <Stack.Screen name="(customer)/makeCustomer" options={{ presentation: 'modal', title: 'Add Customer' }} />
                 <Stack.Screen name="+not-found" />
               </Stack>
             </QueryProvider>
