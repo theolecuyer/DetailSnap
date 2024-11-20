@@ -1,12 +1,15 @@
 
 export type CarDetailInfo = {
     id: number;
+    group: number;
     image: string | null;
     services: Service[];
     open: boolean;
     carMake: string;
     carModel: string;
-    date: string;
+    customer: number;
+    open_at: Date;
+    close_at: Date;
 };
 
 export type AddCardInfo = {
