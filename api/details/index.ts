@@ -2,7 +2,6 @@ import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import { carDetail } from "@/types/types";
-import { PostgrestError } from "@supabase/supabase-js";
 
 export const useDetailList = () => {
   const { group } = useAuth();
@@ -20,10 +19,11 @@ export const useDetailList = () => {
       },
     });
 }
+
 /**
  * Adds a new car detail to the Supabase table. Assumes the detail has been populated with values
- * @param detail - The detail to add, without the id and open_at values intialized
- * @returns - returns an erorr that is either null or contains a PostgrestError
+ * @param detail The detail to add, without the id and open_at values intialized
+ * @returns an error that is either null or contains a PostgrestError
  */
 export const addDetail = async (detail: Omit<carDetail, "id" | "open_at">) => {
   const { data, error } = await supabase
