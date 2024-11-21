@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
-import { carDetail } from "@/types/types";
 
 export const useDetailList = () => {
   const { group } = useAuth();

@@ -1,7 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
-import { customer } from "@/types/types";
 
 /**
  * For the current shop group, the customers are returned

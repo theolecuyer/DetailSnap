@@ -7,7 +7,6 @@ import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } fro
 import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
 import { useDetailList, addDetail } from "@/api/details";
-import { carDetail, AddCardInfo } from "@/types/types";
 export default function Index() {
   const { session, loading, profile, group } = useAuth();
   const {data: details, isLoading} = useDetailList();

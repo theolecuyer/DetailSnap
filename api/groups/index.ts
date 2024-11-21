@@ -1,5 +1,4 @@
 import { supabase } from "@/lib/supabase";
-import { detailShop } from "@/types/types";
 
 /**
  * Adds a new group to the Supabase table. Assumes the group has been populated with values
