@@ -1,31 +1,37 @@
 // app/(tabs)/[id].tsx
 import { useLocalSearchParams, Stack, useRouter } from 'expo-router';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import detailInfoList from '@/assets/data/testServices';
 import { Ionicons } from '@expo/vector-icons';
+import { useDetailList } from '@/api/details';
+import { ActivityIndicator } from 'react-native';
 const DetailPage = () => {
     const { id } = useLocalSearchParams();
     const router = useRouter();
-    const detailInfo = detailInfoList.find((p) => p.id === Number(id));
+    const {data: details, isLoading} = useDetailList();
+    const detailInfo = details?.find((p) => p.id === Number(id));
+    if (isLoading) {
+        return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
+    }
+    console.log(detailInfo?.car_make)
     if (!detailInfo) {
         return <Text>Detail not found</Text>;
       }
-    if('carMake' in detailInfo) {
+    if('car_make' in detailInfo) {
         return (
             <View style={styles.container}>
                 <Stack.Screen 
                 options={{ 
-                    title: `Detail ${detailInfo.carMake + " " + detailInfo.carModel}`,
+                    title: `Detail ${detailInfo.car_make + " " + detailInfo.car_model}`,
                     headerLeft: () => (
                         <Pressable onPress={() => router.back()} style={{ marginLeft: 15 }}>
                           <Ionicons name="arrow-back" size={24} color="black" />
                         </Pressable>
                       ),
                 }} />
-                <Text>{detailInfo.carMake} {detailInfo.carModel}</Text>
-                <Text>{new Date(detailInfo.date).toLocaleDateString()}</Text>
+                <Text>{detailInfo.car_make} {detailInfo.car_model}</Text>
+                <Text>{detailInfo.open_at}</Text>
                 <View>
-                    {detailInfo.services.map((service, index) => (
+                    {Array.isArray(detailInfo.services) && detailInfo.services.map((service, index) => (
                         <Text key={index}>{service}</Text>
                     ))}
                 </View>

@@ -1,5 +1,4 @@
 import { Text, View, StyleSheet, Pressable, Animated, Image, ScrollView, ActivityIndicator } from "react-native";
-import detailInfoList from "@/assets/data/testServices";
 import DashboardListItem from "@/components/DashboardListItem";
 import Caret from "@/components/Caret";
 import { HStack } from "@/components/ui/hstack";
@@ -7,24 +6,36 @@ import { VStack } from "@/components/ui/vstack";
 import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
-import { useDetailList } from "@/api/details";
+import { useDetailList, addDetail } from "@/api/details";
+import { carDetail, AddCardInfo } from "@/types/types";
 export default function Index() {
-  // //Values for the caret and for animation, unused, possibly future
-  // const [caretDown, setCaretDown] = useState(true);
-  // const rotation = useRef(new Animated.Value(0)).current;
-
-  // const caretPress = () => {
-  //   setCaretDown(!caretDown);
-  //   console.log("Caret is down:", !caretDown);
-  // };
   const { session, loading, profile, group } = useAuth();
-  if (loading) {
+  const {data: details, isLoading} = useDetailList();
+  const typedDetailList = (details ?? []) as carDetail[];
+  typedDetailList?.push({
+    id: "add_card",
+    type: "add",
+  });
+
+  // Test insert supabase types
+  // const myCarDetail: carDetail = {
+  //   id: undefined,
+  //   group: group.id,
+  //   image: 'https://media.ed.edmunds-media.com/gmc/yukon-xl/2023/oem/2023_gmc_yukon-xl_4dr-suv_denali-ultimate_fq_oem_1_1280.jpg',
+  //   services: ['Interior', 'Exterior'] as Service[],
+  //   open: true,
+  //   car_make: 'GMC',
+  //   car_model: 'Yukon',
+  //   customer: 1,
+  //   open_at: undefined,
+  //   close_at: null,
+  // }
+  // const error = addDetail(myCarDetail);
+
+  if (loading || isLoading) {
     return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
   }
   const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 
-
-  const {data: details} = useDetailList();
-  console.log(details);
   return (
     <ScrollView style={styles.container}>
       {/*Team Header*/}
@@ -79,7 +90,7 @@ export default function Index() {
       <View style={styles.listContainer}>
       <FlashList
         horizontal
-        data={detailInfoList}
+        data={typedDetailList}
         renderItem={({ item }) =>
           item.id === "add_card" ? (
             <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
@@ -90,7 +101,7 @@ export default function Index() {
           ) 
         }
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id ? item.id.toString() : 'add_card'}
         nestedScrollEnabled={true}
         estimatedItemSize={200}
       />
@@ -105,7 +116,7 @@ export default function Index() {
       <View style={styles.listContainer}>
       <FlashList
         horizontal
-        data={detailInfoList}
+        data={typedDetailList}
         renderItem={({ item }) =>
           item.id === "add_card" ? (
             <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
@@ -116,7 +127,7 @@ export default function Index() {
           ) 
         }
         showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.id ? item.id.toString() : 'add_card'}
         nestedScrollEnabled={true}
         estimatedItemSize={200}
       />

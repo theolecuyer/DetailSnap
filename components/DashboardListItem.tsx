@@ -1,4 +1,4 @@
-import { detailInfo } from "@/types";
+import { carDetail } from "@/types/types";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
@@ -6,7 +6,7 @@ import { Link, useRouter, Href } from "expo-router";
 import { memo } from "react";
 
 type DashboardListItemProps = {
-    detailInfo: detailInfo;
+    detailInfo: carDetail;
 };
 
 const serviceColors: { [key in string]: string } = {
@@ -25,8 +25,8 @@ const textColors: { [key in string]: string } = {
 
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     const router = useRouter();
-   
-    if ('carMake' in detailInfo) {
+    
+    if ('car_make' in detailInfo) {
         const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href
         // Render the car detail card
         const handlePress = () => {
@@ -36,17 +36,17 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
             <Pressable style={styles.container} onPress={handlePress}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source={detailInfo.image ? { uri: detailInfo.image } : defaultImage}
+                        source={detailInfo.image ? { uri: detailInfo.image } : {uri: 'https://media.ed.edmunds-media.com/gmc/yukon-xl/2023/oem/2023_gmc_yukon-xl_4dr-suv_denali-ultimate_fq_oem_1_1280.jpg'}}
                         style={styles.image}
                         resizeMode='cover'
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.text}>{detailInfo.carMake + " " + detailInfo.carModel}</Text>
-                    <Text style={styles.dateText}>{new Date(detailInfo.date).toLocaleDateString()}</Text>
+                    <Text style={styles.text}>{detailInfo.car_make + " " + detailInfo.car_model}</Text>
+                    <Text style={styles.dateText}>{detailInfo.open_at}</Text>
                 </View>
                 <View style={styles.servicesContainer}>
-                    {detailInfo.services.map((service, index) => (
+                    {Array.isArray(detailInfo.services) && detailInfo.services.map((service, index) => (
                         <View
                             key={index}
                             style={[styles.serviceHighlight, { backgroundColor: serviceColors[service] }]}
