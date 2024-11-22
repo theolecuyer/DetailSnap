@@ -7,9 +7,17 @@ import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } fro
 import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
 import { useDetailList, addDetail } from "@/api/details";
+import { useEffect } from "react";
 export default function Index() {
   const { session, loading, profile, group } = useAuth();
-  const {data: details, isLoading} = useDetailList();
+  const { data: details, isLoading, refetch } = useDetailList();
+
+  useEffect(() => {
+    if (session && !isLoading && !loading) {
+      refetch();
+    }
+  }, [session, refetch, isLoading, loading]);
+
   const typedDetailList = (details ?? []) as carDetail[];
   typedDetailList?.push({
     id: "add_card",
@@ -31,7 +39,7 @@ export default function Index() {
   // }
   // const error = addDetail(myCarDetail);
 
-  if (loading || isLoading) {
+  if (isLoading || loading) {
     return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
   }
   const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 

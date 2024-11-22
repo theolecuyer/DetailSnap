@@ -3,10 +3,10 @@ import { PropsWithChildren, createContext, useContext, useEffect, useState } fro
 import { Session } from "@supabase/supabase-js";
 
 type AuthData = {
-    session: Session | null
-    loading: boolean
-    profile: any
-    group: any
+    session: Session | null;
+    loading: boolean;
+    profile: any;
+    group: any;
 };
 
 const AuthContext = createContext<AuthData>({
@@ -16,62 +16,57 @@ const AuthContext = createContext<AuthData>({
     group: null,
 });
 
-export default function AuthProvider({children}: PropsWithChildren) {
+export default function AuthProvider({ children }: PropsWithChildren) {
     const [session, setSession] = useState<Session | null>(null);
     const [profile, setProfile] = useState<any | null>(null);
     const [group, setGroup] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchSession =async () => {
-            const { data } = await supabase.auth.getSession();
-            setSession(data.session);
-            if (data.session) {
-                const { data: profileData } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', data.session.user.id)
-                    .single()
-                setProfile(profileData || null);
-                if (profileData?.group_id) {
-                    const { data: groupData } = await supabase
-                        .from('groups')
-                        .select('*')
-                        .eq('id', profileData?.group_id)
-                        .single()
-                    setGroup(groupData || null);
-                }
-            }
-            setLoading(false);
-        }
-        fetchSession();
-        supabase.auth.onAuthStateChange(async (_event, session) => {
-            setSession(session);
-            if (session) {
-                setLoading(true);
-                const { data: profileData } = await supabase
-                    .from('profiles')
-                    .select('*')
-                    .eq('id', session.user.id)
-                    .single();
-                setProfile(profileData || null);
-                if (profileData?.group_id) {
-                    const { data: groupData } = await supabase
-                        .from('groups')
-                        .select('*')
-                        .eq('id', profileData?.group_id)
-                        .single();
-                    setGroup(groupData || null);
-                }
-                setLoading(false);
-            } else {
-                setProfile(null);
-                setGroup(null);
-            }
-        })
-    }, [])
+    // Function to fetch session data
+    const fetchSession = async (sessions: Session | null) => {
+        setLoading(true);
+        if (sessions) {
+            setSession(sessions);
+            const { data: profileData } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', sessions.user.id)
+                .single();
+            setProfile(profileData || null);
 
-    return <AuthContext.Provider value={{session, loading, profile, group}}>{children}</AuthContext.Provider>
+            if (profileData?.group_id) {
+                const { data: groupData } = await supabase
+                    .from('groups')
+                    .select('*')
+                    .eq('id', profileData?.group_id)
+                    .single();
+                setGroup(groupData || null);
+            }
+        } else {
+            setSession(null);
+            setProfile(null);
+            setGroup(null);
+        }
+        setLoading(false);
+    };
+
+    useEffect(() => {
+        const fetchInitialSession = async () => {
+            const { data } = await supabase.auth.getSession();
+            fetchSession(data.session);
+        };
+        fetchInitialSession();
+
+        const { data: listener } = supabase.auth.onAuthStateChange((_, session) => {
+            fetchSession(session);
+        });
+
+        return () => {
+            listener.subscription.unsubscribe();
+        };
+    }, []);
+
+    return <AuthContext.Provider value={{ session, loading, profile, group }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);

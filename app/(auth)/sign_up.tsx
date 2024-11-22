@@ -80,7 +80,7 @@ const SignUpScreen = () => {
     //Create a group. TODO: allow user to create new group or request to join current
     const { data: newGroup, error: newGroupError } = await supabase
     .from('groups')
-    .insert({ name: company, logo: ''})
+    .insert({ name: company, logo: '', creator: user.user?.id})
     .select()
     .single();
 
@@ -93,13 +93,15 @@ const SignUpScreen = () => {
     
 
     //Add group owner to the group. TODO: Differentiate between owners/employees
+    if (user.user?.id) {
     const { error: groupUpdateError } = await supabase
-    .from('groups')
-    .update({ creator: user.user?.id })
-    .eq('id', newGroup.id);
-
+      .from('profiles')
+      .update({ group_id: newGroup.id})
+      .eq('id', user.user?.id);
+    
     if (groupUpdateError) {
       Alert.alert('Failed to associate user with the group. Please try again.');
+    }
     }
     setLoading(false)
   }
