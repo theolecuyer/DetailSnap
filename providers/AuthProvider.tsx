@@ -33,12 +33,14 @@ export default function AuthProvider({children}: PropsWithChildren) {
                     .eq('id', data.session.user.id)
                     .single()
                 setProfile(profileData || null);
-                const { data: groupData } = await supabase
-                    .from('groups')
-                    .select('*')
-                    .eq('id', profileData.group_id)
-                    .single()
-                setGroup(groupData || null);
+                if (profileData?.group_id) {
+                    const { data: groupData } = await supabase
+                        .from('groups')
+                        .select('*')
+                        .eq('id', profileData?.group_id)
+                        .single()
+                    setGroup(groupData || null);
+                }
             }
             setLoading(false);
         }
@@ -53,12 +55,14 @@ export default function AuthProvider({children}: PropsWithChildren) {
                     .eq('id', session.user.id)
                     .single();
                 setProfile(profileData || null);
-                const { data: groupData } = await supabase
-                    .from('groups')
-                    .select('*')
-                    .eq('id', profileData?.group_id)
-                    .single();
-                setGroup(groupData || null);
+                if (profileData?.group_id) {
+                    const { data: groupData } = await supabase
+                        .from('groups')
+                        .select('*')
+                        .eq('id', profileData?.group_id)
+                        .single();
+                    setGroup(groupData || null);
+                }
                 setLoading(false);
             } else {
                 setProfile(null);

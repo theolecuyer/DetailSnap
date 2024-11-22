@@ -23,7 +23,7 @@ const SignUpScreen = () => {
   const [firstnameError, setFirstnameError] = useState(false);
   const [lastnameError, setLastnameError] = useState(false);
   const [companyError, setCompanyError] = useState(false);
-  
+  const [accountExistsError, setAccountExistsError] = useState(false);  
 
   async function signUpWithEmail() {
     //Set errors initially to use outside states for checking
@@ -39,6 +39,44 @@ const SignUpScreen = () => {
 
     setLoading(true)
 
+    //Sign up the user and create their profile
+    const { data: user, error } = await supabase.auth.signUp({
+      email, password, 
+      options: {
+       data: {
+         first_name: firstname,
+         last_name: lastname,
+         //avatar_url: '',
+       }
+      }
+   })
+   //Reset supabase error codes
+   setPasswordError(false);
+   setEmailError(false);
+   setCompanyError(false);
+   setAccountExistsError(false);
+   if(error) {
+    switch(error?.code) {
+      case "anonymous_provider_disabled":
+        setEmailError(true);
+        break;
+      case "validation_failed":
+        setEmailError(true);
+        break;
+      case "weak_password":
+        setPasswordError(true);
+        break;
+      case "user_already_exists":
+        setAccountExistsError(true);
+        break;
+      default:
+        setEmailError(false);
+        setPasswordError(false);
+    }
+    setLoading(false);
+    return;
+  }
+
     //Create a group. TODO: allow user to create new group or request to join current
     const { data: newGroup, error: newGroupError } = await supabase
     .from('groups')
@@ -52,35 +90,7 @@ const SignUpScreen = () => {
       console.error(newGroupError);
       return;
     }
-    //Sign up the user and create their profile
-    const { data: user, error } = await supabase.auth.signUp({
-       email, password, 
-       options: {
-        data: {
-          first_name: firstname,
-          last_name: lastname,
-          group_id: newGroup.id
-          //avatar_url: '',
-        }
-       }
-    })
-    //Reset supabase error codes
-    setPasswordError(false);
-    setEmailError(false);
-    switch(error?.code) {
-      case "anonymous_provider_disabled":
-        setEmailError(true);
-        break;
-      case "validation_failed":
-        setEmailError(true);
-        break;
-      case "weak_password":
-        setPasswordError(true);
-        break;
-      default:
-        setEmailError(false);
-        setPasswordError(false);
-    }
+    
 
     //Add group owner to the group. TODO: Differentiate between owners/employees
     const { error: groupUpdateError } = await supabase
@@ -143,7 +153,8 @@ const SignUpScreen = () => {
         autoCapitalize='none'
         secureTextEntry
       />
-      <Text style={passwordError ? styles.errorText : styles.blankText}>Password must contain:\n6 letters</Text>
+      <Text style={passwordError ? styles.errorText : styles.blankText}>Password must contain:6 letters</Text>
+      <Text style={accountExistsError ? styles.errorText : styles.blankText}>Account Exists</Text>
 
       <Button onPress={signUpWithEmail} disabled={loading} text={loading ? 'Creating account...' : 'Create account'} />
       <Link href="/sign_in" style={styles.textButton}>
