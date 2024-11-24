@@ -3,20 +3,24 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 
 export const useDetailList = () => {
-  const { group, loading } = useAuth();
-      return useQuery({
-        queryKey: ['details'],
-        queryFn: async () => {
-          const {data, error} = await supabase
-            .from('details')
-            .select('*')
-            .eq('group', group.id);
-          if(error) {
-            throw new Error(error.message);
-          }
-          return data;
-        },
-      });
+  const { group, session, loading } = useAuth();
+  return useQuery({
+    queryKey: ['details', session?.user?.id, group?.id],
+    queryFn: async () => {
+      if (!group?.id) {
+        return [];
+      }
+      const { data, error } = await supabase
+        .from('details')
+        .select('*')
+        .eq('group', group.id);
+      if (error) {
+        throw new Error(error.message);
+      }
+      return data;
+    },
+    enabled: !!session && !!group?.id && !loading,
+  });
 }
 
 /**

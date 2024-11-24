@@ -7,7 +7,7 @@ import { Avatar, AvatarBadge, AvatarFallbackText, AvatarGroup, AvatarImage } fro
 import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
 import { useDetailList, addDetail } from "@/api/details";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 export default function Index() {
   const { session, loading, profile, group } = useAuth();
   const { data: details, isLoading, refetch } = useDetailList();
@@ -18,11 +18,11 @@ export default function Index() {
     }
   }, [session, refetch, isLoading, loading]);
 
-  const typedDetailList = (details ?? []) as carDetail[];
-  typedDetailList?.push({
-    id: "add_card",
-    type: "add",
-  });
+  const { activeDetails, completedDetails } = useMemo(() => {
+    const active = (details ?? []).filter((item) => item.open);
+    const completed = (details ?? []).filter((item) => !item.open);
+    return { activeDetails: active, completedDetails: completed };
+  }, [details]);
 
   // Test insert supabase types
   // const myCarDetail: carDetail = {
@@ -42,7 +42,34 @@ export default function Index() {
   if (isLoading || loading) {
     return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
   }
-  const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist"; 
+  const fullName = profile ? `${profile.first_name} ${profile.last_name}` : "Doesnt Exist";
+  
+  const keyExtractor = (item: carDetail) => {
+    if (item.id === "add_card") return `${session?.user?.id}-add_card`;
+    return `${session?.user?.id}-${item.id}`;
+  };
+
+  const renderList = (listData: carDetail[]) => (
+    <FlashList
+      horizontal
+      data={[...listData, { id: "add_card", type: "add" } as carDetail]}
+      renderItem={({ item }) =>
+        item.id === "add_card" ? (
+          <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
+            <Text style={styles.addText}>+ Add</Text>
+          </Pressable>
+        ) : (
+          <DashboardListItem detailInfo={item} />
+        ) 
+      }
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={keyExtractor}
+      nestedScrollEnabled={true}
+      estimatedItemSize={200}
+      estimatedListSize={{ height: 200, width: 400 }}
+    />
+  );
+
   return (
     <ScrollView style={styles.container}>
       {/*Team Header*/}
@@ -89,55 +116,23 @@ export default function Index() {
       </AvatarGroup>
       </HStack>
 
-      {/*Active Header & flastlist*/}
+      {/*Active Header & flashlist*/}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Active</Text>
         <Caret/>
+
       </View>
       <View style={styles.listContainer}>
-      <FlashList
-        horizontal
-        data={typedDetailList}
-        renderItem={({ item }) =>
-          item.id === "add_card" ? (
-            <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
-              <Text style={styles.addText}>+ Add</Text>
-            </Pressable>
-          ) : (
-            <DashboardListItem detailInfo={item} />
-          ) 
-        }
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id ? item.id.toString() : 'add_card'}
-        nestedScrollEnabled={true}
-        estimatedItemSize={200}
-      />
+        {renderList(activeDetails)}
       </View>
 
-      {/*Completed Header & flastlist*/}
+      {/*Completed Header & flashlist*/}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Completed</Text>
         <Caret/>
       </View>
-
       <View style={styles.listContainer}>
-      <FlashList
-        horizontal
-        data={typedDetailList}
-        renderItem={({ item }) =>
-          item.id === "add_card" ? (
-            <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
-              <Text style={styles.addText}>+ Add</Text>
-            </Pressable>
-          ) : (
-            <DashboardListItem detailInfo={item} />
-          ) 
-        }
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item) => item.id ? item.id.toString() : 'add_card'}
-        nestedScrollEnabled={true}
-        estimatedItemSize={200}
-      />
+        {renderList(completedDetails)}
       </View>
     </ScrollView>
   );
@@ -145,7 +140,7 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    //padding: 10,
   },
   image: {
     width:50,
