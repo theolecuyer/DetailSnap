@@ -4,6 +4,7 @@ import Button from '@/components/Button';
 import { Colors } from '@/constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/providers/AuthProvider';
 
 const SignUpScreen = () => {
   //Auth states
@@ -25,6 +26,8 @@ const SignUpScreen = () => {
   const [companyError, setCompanyError] = useState(false);
   const [accountExistsError, setAccountExistsError] = useState(false);  
 
+  //Get the refreshAuth function from the Auth Provider
+  const { refreshAuth } = useAuth();
   async function signUpWithEmail() {
     //Set errors initially to use outside states for checking
     const isFirstnameValid = firstname.length > 0;
@@ -103,6 +106,7 @@ const SignUpScreen = () => {
       Alert.alert('Failed to associate user with the group. Please try again.');
     }
     }
+    await refreshAuth();
     setLoading(false)
   }
 

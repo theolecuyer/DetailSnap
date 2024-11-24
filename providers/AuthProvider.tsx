@@ -7,6 +7,7 @@ type AuthData = {
     loading: boolean;
     profile: any;
     group: any;
+    refreshAuth: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthData>({
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthData>({
     loading: true,
     profile: null,
     group: null,
+    refreshAuth: async () => {},
 });
 
 export default function AuthProvider({ children }: PropsWithChildren) {
@@ -50,6 +52,16 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         setLoading(false);
     };
 
+    const refreshAuth = async () => {
+        setLoading(true);
+        try {
+            const { data } = await supabase.auth.getSession();
+            await fetchSession(data.session);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
         const fetchInitialSession = async () => {
             const { data } = await supabase.auth.getSession();
@@ -66,7 +78,7 @@ export default function AuthProvider({ children }: PropsWithChildren) {
         };
     }, []);
 
-    return <AuthContext.Provider value={{ session, loading, profile, group }}>{children}</AuthContext.Provider>;
+    return <AuthContext.Provider value={{ session, loading, profile, group, refreshAuth }}>{children}</AuthContext.Provider>;
 }
 
 export const useAuth = () => useContext(AuthContext);
