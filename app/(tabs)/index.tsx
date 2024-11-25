@@ -8,6 +8,7 @@ import { useAuth } from "@/providers/AuthProvider";
 import { FlashList } from "@shopify/flash-list";
 import { useDetailList, addDetail } from "@/api/details";
 import { useEffect, useMemo } from "react";
+import { router } from "expo-router";
 export default function Index() {
   const { session, loading, profile, group } = useAuth();
   const { data: details, isLoading, refetch } = useDetailList();
@@ -55,7 +56,7 @@ export default function Index() {
       data={[...listData, { id: "add_card", type: "add" } as carDetail]}
       renderItem={({ item }) =>
         item.id === "add_card" ? (
-          <Pressable style={styles.addCard} onPress={() => {/* Handle add later */}}>
+          <Pressable style={styles.addCard} onPress={() => {router.push("/addItem")}}>
             <Text style={styles.addText}>+ Add</Text>
           </Pressable>
         ) : (
