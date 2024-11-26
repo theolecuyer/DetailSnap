@@ -2,7 +2,9 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter, Href } from "expo-router";
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+import { supabase } from "@/lib/supabase";
+import { downloadDetailImage } from "@/api/details";
 
 type DashboardListItemProps = {
     detailInfo: carDetail;
@@ -24,18 +26,28 @@ const textColors: { [key in string]: string } = {
 
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     const router = useRouter();
-    
+    const [image, setImage] = useState<string>('')
     if ('car_make' in detailInfo) {
         const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href
         // Render the car detail card
         const handlePress = () => {
             router.push(MY_ROUTE);
         };
+        
+        //Load the image every time the detail changes
+        useEffect(() => {
+            const fetchImage = async () => {
+              const imageUrl = await downloadDetailImage(detailInfo);
+              setImage(imageUrl);
+            };
+            fetchImage();
+          }, [detailInfo]);
+        
         return (
             <Pressable style={styles.container} onPress={handlePress}>
                 <View style={styles.imageContainer}>
                     <Image
-                        source={detailInfo.image ? { uri: detailInfo.image } : {uri: 'https://media.ed.edmunds-media.com/gmc/yukon-xl/2023/oem/2023_gmc_yukon-xl_4dr-suv_denali-ultimate_fq_oem_1_1280.jpg'}}
+                        source={image? { uri: image } : {uri: 'https://static.vecteezy.com/system/resources/previews/004/141/669/large_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'}}
                         style={styles.image}
                         resizeMode='cover'
                     />

@@ -6,6 +6,21 @@ import { Link, Stack } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
 
+const createGroupFolder = async (groupId: number) => {
+  const { error: uploadError } = await supabase.storage
+    .from('detail_photos')
+    .upload(`${groupId}/.empty`, '', {
+      cacheControl: '3600',
+      upsert: false,
+    });
+
+  if (uploadError) {
+    console.error('Failed to create group folder:', uploadError);
+    Alert.alert('Error', 'Failed to set up storage for the group.');
+    return;
+  }
+};
+
 const SignUpScreen = () => {
   //Auth states
   const [email, setEmail] = useState('');
@@ -106,6 +121,7 @@ const SignUpScreen = () => {
       Alert.alert('Failed to associate user with the group. Please try again.');
     }
     }
+    await createGroupFolder(newGroup.id);
     await refreshAuth();
     setLoading(false)
   }

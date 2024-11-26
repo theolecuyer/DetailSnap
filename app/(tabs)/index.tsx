@@ -49,7 +49,7 @@ export default function Index() {
     if (item.id === "add_card") return `${session?.user?.id}-add_card`;
     return `${session?.user?.id}-${item.id}`;
   };
-
+  
   const renderList = (listData: carDetail[]) => (
     <FlashList
       horizontal
