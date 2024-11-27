@@ -57,7 +57,7 @@ export const downloadDetailImage = async (detail: carDetail): Promise<string> =>
           if (fr.result) {
             resolve(fr.result as string);
           } else {
-            reject("Failed to convert image to Base64.");
+            reject("Failed to convert image.");
           }
         };
         fr.onerror = () => reject("Error reading the image file.");

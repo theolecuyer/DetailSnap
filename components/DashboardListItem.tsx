@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter, Href } from "expo-router";
@@ -27,30 +27,49 @@ const textColors: { [key in string]: string } = {
 const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     const router = useRouter();
     const [image, setImage] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [hasError, setHasError] = useState<boolean>(false);
     if ('car_make' in detailInfo) {
-        const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href
-        // Render the car detail card
-        const handlePress = () => {
-            router.push(MY_ROUTE);
+        const fallbackImage =
+        "https://static.vecteezy.com/system/resources/previews/004/141/669/large_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
+
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                setIsLoading(true);
+                setHasError(false);
+                const imageUrl = await downloadDetailImage(detailInfo);
+                setImage(imageUrl);
+            } catch (error) {
+                console.error("Image fetch failed:", error);
+                setHasError(true);
+            } finally {
+                setIsLoading(false);
+            }
         };
-        
-        //Load the image every time the detail changes
-        useEffect(() => {
-            const fetchImage = async () => {
-              const imageUrl = await downloadDetailImage(detailInfo);
-              setImage(imageUrl);
-            };
-            fetchImage();
-          }, [detailInfo]);
+
+        fetchImage();
+    }, [detailInfo]);
+
+    const handlePress = () => {
+        const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href;
+        router.push(MY_ROUTE);
+    };
         
         return (
             <Pressable style={styles.container} onPress={handlePress}>
                 <View style={styles.imageContainer}>
+                {isLoading ? (
+                    <View style={styles.loader}>
+                        <ActivityIndicator size='small' color="#6c6c71" />
+                    </View>
+                ) : (
                     <Image
-                        source={image? { uri: image } : {uri: 'https://static.vecteezy.com/system/resources/previews/004/141/669/large_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg'}}
+                        source={hasError ? { uri: fallbackImage } : { uri: image }}
                         style={styles.image}
-                        resizeMode='cover'
+                        resizeMode="cover"
                     />
+                )}
                 </View>
                 <View style={styles.textContainer}>
                     <Text style={styles.text}>{detailInfo.car_make + " " + detailInfo.car_model}</Text>
@@ -66,7 +85,7 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
                         </View>
                     ))}
                 </View>
-            </Pressable>    
+            </Pressable>  
         );
     } else {
         return (
@@ -99,6 +118,12 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#f0f0f0',
     },
     textContainer: {
         marginTop: 4,
