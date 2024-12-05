@@ -15,7 +15,7 @@ const AddItemScreen = () => {
 
   const addPhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ["images", "videos", "livePhotos"],
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
