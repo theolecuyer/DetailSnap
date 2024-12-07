@@ -1,9 +1,13 @@
 {
     "build": {
-      "preview": {
+      "development": {
         "developmentClient": true,
+        "distribution": "internal",
         "ios": {
           "simulator": true
+        },
+        "env": {
+            "NODE_OPTIONS": "--max_old_space_size=4096"
         }
       },
       "production": {}
