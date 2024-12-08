@@ -6,12 +6,32 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useAuth } from '@/providers/AuthProvider';
 import { ActivityIndicator } from 'react-native';
 import { supabase } from '@/lib/supabase';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useFocusEffect } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
+import { FadeInDown } from 'react-native-reanimated';
 
 const index = () => {
   const { session, loading } = useAuth();
   const router = useRouter();
+
+  //Stop the splash screen from auto hiding until load is complete
+  useEffect(() => {
+    async function prepare() {
+      await SplashScreen.preventAutoHideAsync();
+    }
+    prepare();
+  }, []);
+
+  SplashScreen.setOptions({
+    fade: true,
+  });
+  //Hide splash screen once loaded
+  useEffect(() => {
+    if (!loading && session !== undefined) {
+      SplashScreen.hideAsync();
+    }
+  }, [loading, session]);
 
   useFocusEffect(
     useCallback(() => {
@@ -21,24 +41,6 @@ const index = () => {
         router.replace('/(tabs)/');
       }
     }, [loading, session, router])
-  );
-
-  if (loading) {
-    return <ActivityIndicator size="large" color="#0000ff" style={{flex: 1}}/>
-  }
-
-  return (
-    <SafeAreaProvider>
-      <View style={{ flex: 1, justifyContent: 'center', padding: 10 }}>
-        <Link href={'/(tabs)'} asChild>
-          <Button text="Main Screen" />
-        </Link>
-        <Link href={'/sign_in'} asChild>
-          <Button text="Sign in screen" />
-        </Link>
-        <Button onPress={() => supabase.auth.signOut()} text="Sign out" />
-      </View>
-    </SafeAreaProvider>
   );
 };
 
