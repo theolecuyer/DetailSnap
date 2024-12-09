@@ -40,7 +40,19 @@
           "cameraPermission": "The app requires access to your camera to take photos."
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#232323",
+          "image": "./assets/images/testlogo.png",
+          "dark": {
+            "image": "./assets/images/testlogo.png",
+            "backgroundColor": "#232323"
+          },
+          "imageWidth": 200
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
