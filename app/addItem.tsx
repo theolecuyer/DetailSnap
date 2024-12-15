@@ -13,6 +13,10 @@ const AddItemScreen = () => {
     //TODO: Logic for existing customer
   };
 
+  const updateDBPhoto = () => {
+    
+  }
+
   const addPhoto = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images", "videos", "livePhotos"],

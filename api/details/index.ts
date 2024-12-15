@@ -38,35 +38,26 @@ export const addDetail = async (detail: Omit<carDetail, "id" | "open_at">) => {
 };
 
 /**
- * Downloads an image using the uuid as the filename and group id as foldername
- * @param detail The detail to read the image from, the image name being a uuid
- * @returns A promise that contains the file reader result as a string
+ * Gets the public URL for an image stored in Supabase.
+ * Supabase handles Policy security, checking against group table
+ *
+ * @param detail - The detail containing the group and image ID.
+ * @returns The public URL for the image.
+ * @throws If the detail is invalid.
  */
-export const downloadDetailImage = async (detail: carDetail): Promise<string> => {
+export const makeSignedURL = async (detail: carDetail): Promise<string> => {
+  //TODO: 
+  
   if ('group' in detail && detail.image) {
-    try {
-      const { data, error } = await supabase.storage
-        .from('detail_photos')
-        .download(`${detail.group}/${detail.image}.avif`);
-      if (error) {
-        throw new Error(error.message);
-      }
-      return new Promise<string>((resolve, reject) => {
-        const fr = new FileReader();
-        fr.onloadend = () => {
-          if (fr.result) {
-            resolve(fr.result as string);
-          } else {
-            reject("Failed to convert image.");
-          }
-        };
-        fr.onerror = () => reject("Error reading the image file.");
-        fr.readAsDataURL(data as Blob);
-      });
-    } catch (error) {
-      console.error('Error downloading the image:', error);
-      throw error;
+    const path = `${detail.group}/${detail.image}.avif`
+    const { data, error } = await supabase.storage
+      .from('detail_photos')
+      .createSignedUrl(path, 60);
+    if (error) {
+      throw new Error(error.message);
     }
+
+    return data?.signedUrl ?? '';
   } else {
     throw new Error("Detail does not contain image id");
   }

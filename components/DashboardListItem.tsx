@@ -4,7 +4,7 @@ import { Colors } from "@/constants/Colors";
 import { Link, useRouter, Href } from "expo-router";
 import { memo, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { downloadDetailImage } from "@/api/details";
+import { makeSignedURL } from "@/api/details";
 
 type DashboardListItemProps = {
     detailInfo: carDetail;
@@ -33,23 +33,23 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
         const fallbackImage =
         "https://static.vecteezy.com/system/resources/previews/004/141/669/large_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
 
-    useEffect(() => {
-        const fetchImage = async () => {
+        const fetchImageUrl = async () => {
+            //TODO: Modify when signedurl is in detail table
             try {
-                setIsLoading(true);
-                setHasError(false);
-                const imageUrl = await downloadDetailImage(detailInfo);
-                setImage(imageUrl);
+                const url = await makeSignedURL(detailInfo); // Fetch the signed URL
+                setImage(url); // Set the image once the URL is fetched
             } catch (error) {
-                console.error("Image fetch failed:", error);
                 setHasError(true);
+                console.error('Error fetching signed URL:', error);
             } finally {
-                setIsLoading(false);
+                setIsLoading(false); // Set loading to false after the process finishes (success or error)
             }
         };
-
-        fetchImage();
-    }, [detailInfo]);
+        
+        useEffect(() => {
+            setIsLoading(true);
+            fetchImageUrl();
+        }, [detailInfo]);
 
     const handlePress = () => {
         const MY_ROUTE = `/(detail)/${detailInfo.id}` as Href;
