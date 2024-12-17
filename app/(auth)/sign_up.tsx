@@ -5,21 +5,7 @@ import { Colors } from '@/constants/Colors';
 import { Link, Stack } from 'expo-router';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/providers/AuthProvider';
-
-const createGroupFolder = async (groupId: number) => {
-  const { error: uploadError } = await supabase.storage
-    .from('detail_photos')
-    .upload(`${groupId}/.empty`, '', {
-      cacheControl: '3600',
-      upsert: false,
-    });
-
-  if (uploadError) {
-    console.error('Failed to create group folder:', uploadError);
-    Alert.alert('Error', 'Failed to set up storage for the group.');
-    return;
-  }
-};
+import { createGroupFolder } from '@/api/photos';
 
 const SignUpScreen = () => {
   //Auth states
@@ -121,7 +107,11 @@ const SignUpScreen = () => {
       Alert.alert('Failed to associate user with the group. Please try again.');
     }
     }
-    await createGroupFolder(newGroup.id);
+    const groupCreated = await createGroupFolder(newGroup.id);
+    if(!groupCreated) {
+      Alert.alert('Failed to create group storage folder');
+      //Handle future SignUp Auth error handling
+    }
     await refreshAuth();
     setLoading(false)
   }

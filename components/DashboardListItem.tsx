@@ -1,10 +1,9 @@
 import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "react-native";
-import defaultImage from '../assets/images/default-image.jpg';
 import { Colors } from "@/constants/Colors";
 import { Link, useRouter, Href } from "expo-router";
 import { memo, useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
-import { makeSignedURL } from "@/api/details";
+import { getPhotoURL } from "@/api/photos";
 
 type DashboardListItemProps = {
     detailInfo: carDetail;
@@ -28,22 +27,17 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
     const router = useRouter();
     const [image, setImage] = useState<string>('')
     const [isLoading, setIsLoading] = useState<boolean>(true);
-    const [hasError, setHasError] = useState<boolean>(false);
     if ('car_make' in detailInfo) {
         const fallbackImage =
         "https://static.vecteezy.com/system/resources/previews/004/141/669/large_2x/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg";
 
         const fetchImageUrl = async () => {
-            //TODO: Modify when signedurl is in detail table
-            try {
-                const url = await makeSignedURL(detailInfo); // Fetch the signed URL
-                setImage(url); // Set the image once the URL is fetched
-            } catch (error) {
-                setHasError(true);
-                console.error('Error fetching signed URL:', error);
-            } finally {
-                setIsLoading(false); // Set loading to false after the process finishes (success or error)
+            const url = getPhotoURL(detailInfo); // Fetch the image URL
+            setImage(url); // Set the image once the URL is fetched
+            if(url == '') {
+                setImage(fallbackImage);
             }
+            setIsLoading(false); // Set loading to false after the process finishes (success or error)
         };
         
         useEffect(() => {
@@ -65,7 +59,7 @@ const DashboardListItem = ({ detailInfo }: DashboardListItemProps) => {
                     </View>
                 ) : (
                     <Image
-                        source={hasError ? { uri: fallbackImage } : { uri: image }}
+                        source={{ uri: image }}
                         style={styles.image}
                         resizeMode="cover"
                     />
