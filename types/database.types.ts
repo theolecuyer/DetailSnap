@@ -157,6 +157,44 @@ export type Database = {
           },
         ]
       }
+      services: {
+        Row: {
+          group_id: number | null
+          id: number
+          service_color: string | null
+          service_desc: string | null
+          service_hour_duration: number | null
+          service_name: string | null
+          service_price: number | null
+        }
+        Insert: {
+          group_id?: number | null
+          id?: number
+          service_color?: string | null
+          service_desc?: string | null
+          service_hour_duration?: number | null
+          service_name?: string | null
+          service_price?: number | null
+        }
+        Update: {
+          group_id?: number | null
+          id?: number
+          service_color?: string | null
+          service_desc?: string | null
+          service_hour_duration?: number | null
+          service_name?: string | null
+          service_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "services_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
