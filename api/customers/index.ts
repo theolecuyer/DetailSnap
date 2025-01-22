@@ -35,3 +35,19 @@ export const addCustomer = async (customer: Omit<customer, "id">) => {
 
   return error;
 };
+
+/**
+ * Deletes the current customer object given the id for the customer
+ * @param customer - A customer object which contains the id to be deleted
+ * @returns Either null or a postgres response with the delete message
+ */
+export const deleteCustomer = async (customer:customer) => {
+  if(customer.id) {
+    const response = await supabase
+      .from("customers")
+      .delete()
+      .eq('id', customer.id)
+      return response
+  }
+  return null
+}

@@ -3,6 +3,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/providers/AuthProvider";
 import { useState } from "react";
 
+/**
+ * Uses the current shop group to return a list of all details
+ * @returns A list of all details in an array
+ */
 export const useDetailList = () => {
   const { group, session, loading } = useAuth();
   return useQuery({
